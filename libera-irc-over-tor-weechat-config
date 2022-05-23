@@ -1,0 +1,23 @@
+#!/bin/sh
+
+## https://libera.chat/guides/connect
+
+echo "# torrc entry for libera.chat onion service
+MapAddress palladium.libera.chat libera75jm6of4wxpxt4aynol3xjmbtxgfyjpu34ss4d7r7q2v5zrpyd.onion" >> /etc/tor/torrc
+
+mkdir --parents /home/user/.config/weechat/certs
+PEM_FILE_PATH=/home/user/.config/weechat/certs/libera.pem
+openssl req -x509 -new -newkey rsa:4096 -sha256 -days 1096 -nodes -out $PEM_FILE_PATH -keyout $PEM_FILE_PATH
+
+
+TOR_SOCKS5_PORT=9050
+/proxy add tor socks5 127.0.0.1 $TOR_SOCKS5_PORT
+
+/server add liberachat palladium.libera.chat/6697
+/set irc.server.liberachat.ssl on
+/set irc.server.liberachat.ssl_verify on
+/set irc.server.liberachat.ssl_cert %h/certs/libera.pem
+/set irc.server.liberachat.sasl_mechanism external
+
+/set irc.server.liberachat.proxy "tor"
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+## https://stackoverflow.com/questions/414164/how-can-i-select-random-files-from-a-directory-in-bash
+random_coockie_fortune_()
+{
+	SCRIPT_FILE=/usr/local/bin/cookie-fortune
+	apt install -y cowsay fortunes
+	echo "#!/bin/bash
+## https://stackoverflow.com/questions/414164/how-can-i-select-random-files-from-a-directory-in-bash
+main()
+{
+    CHARACTER=$(ls /usr/share/cowsay/cows/ | shuf -n 1)
+    fortune -s | cowsay -f \$CHARACTER
+}
+main
+exit 0" > $SCRIPT_FILE
+	chmod 755 $SCRIPT_FILE
+}
+random_coockie_fortune_

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BINARIES_FOLDER=
+
+echo "int main()
+{
+    return 44;
+}
+" > return44.c
+
+ARCHITECTURES="mips32 mips32el aarch64 armv7-eabihf x86-64-core-i7 x86-i686"
+LIBCS="glibc musl uclibc"
+

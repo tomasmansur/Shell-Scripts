@@ -1,0 +1,7 @@
+#!/bin/bash
+NGINX_FOLDER_BU=/tmp/nginx
+NGINX_BU_TAR=nginx.tar
+mkdir /tmp/nginx
+cp -r /etc/nginx/conf.d $NGINX_FOLDER_BU
+cp /etc/nginx/nginx.conf $NGINX_FOLDER_BU
+tar -cf $NGINX_BU_TAR $NGINX_FOLDER_BU

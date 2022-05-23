@@ -1,0 +1,42 @@
+#!/bin/sh
+
+## website: toolchains.bootlin.com
+
+BASE_FOLDER_=/opt/software
+DATE_VERSIONS_="2020.08-1 2020.02-2 2018.11-1 2018.02-2 2017.05-toolchains-1-1"
+ARCHITECTURES_="mips32 mips32el mips64-n32 mips64el-n32 aarch64 armv5-eabi armv6-eabihf armv7-eabihf x86-64-core-i7 x86-core2 x86-i686 xtensa-lx60 microblazebe microblazeel sparc64 sh-sh4"
+LIBCS_="glibc musl uclibc"
+
+XCOMPILERS_FOLDER_=$BASE_FOLDER_/xcompilers
+mkdir --parents $XCOMPILERS_FOLDER_ >/dev/null 2>&1
+cd $XCOMPILERS_FOLDER_
+
+for D_V_ in $DATE_VERSIONS_
+do
+    mkdir --parents $D_V_ >/dev/null 2>&1
+    cd $XCOMPILERS_FOLDER_/$D_V_
+    for ARCHI_ in $ARCHITECTURES_
+    do
+        mkdir --parents $ARCHI_ >/dev/null 2>&1
+        cd $XCOMPILERS_FOLDER_/$D_V_/$ARCHI_
+        for LIB_ in $LIBCS_
+        do
+            mkdir --parents $LIB_ >/dev/null 2>&1
+            cd $LIB_
+            if [[ $(wget -q --spider https://toolchains.bootlin.com/downloads/releases/toolchains/${ARCHI_}/tarballs/${ARCHI_}--${LIB_}--stable-${D_V_}.tar.bz2) -eq "0" ]]; then
+                wget -q --https-only https://toolchains.bootlin.com/downloads/releases/toolchains/${ARCHI_}/tarballs/${ARCHI_}--${LIB_}--stable-${D_V_}.tar.bz2
+                tar xf ${ARCHI_}--${LIB_}--stable-${D_V_}.tar.bz2
+                rm -rf ${ARCHI_}--${LIB_}--stable-${D_V_}.tar.bz2
+                mkdir --parents ${ARCHI_}--${LIB_} >/dev/null 2>&1
+                mv ${ARCHI_}--${LIB_}--stable-${D_V_}/* ${ARCHI_}--${LIB_}
+                rm -rf ${ARCHI_}--${LIB_}--stable-${D_V_}
+            else
+                echo "NOT OKAY https://toolchains.bootlin.com/downloads/releases/toolchains/${ARCHI_}/tarballs/${ARCHI_}--${LIB_}--stable-${D_V_}.tar.bz2" >> $XCOMPILERS_FOLDER_/$D_V_/$ARCHI_/not-okay
+            fi
+        done
+        cd $XCOMPILERS_FOLDER_/$D_V_/$ARCHI_
+    done
+    cd $XCOMPILERS_FOLDER_/$D_V_
+done
+
+echo "Test system did not boot - mips64el-n32--musl--stable-2017.05-toolchains-1-1" >> $BASE_FOLDER/not-okay

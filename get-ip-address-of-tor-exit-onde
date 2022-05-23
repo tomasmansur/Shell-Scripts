@@ -1,0 +1,2 @@
+#!/bin/sh
+date && curl --socks5-hostname 127.0.0.1:9050 https://ipecho.net/plain && echo ""

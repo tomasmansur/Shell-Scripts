@@ -1,0 +1,8 @@
+## https://stackoverflow.com/questions/15807122/telnet-file-transfer-between-two-linux-machines
+
+On server:
+nc -l -p 80 > /home/wget-mips-arnet-modem
+
+On source machine:
+/usr/bin/nc -w 3 190.19.211.109 80 < /usr/bin/wget
+/usr/bin/nc 190.19.211.109 80 < /usr/bin/wget

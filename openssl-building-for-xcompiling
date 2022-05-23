@@ -1,0 +1,1 @@
+--api=0.9.8 --cross-compile-prefix=/opt/xcompilers/2017.05-toolchains-1-1/mips32--uclibc--stable/bin/mips-linux- --libdir=/opt/software/ssl/lib --openssldir=/opt/software/ssl --prefix=/opt/software
